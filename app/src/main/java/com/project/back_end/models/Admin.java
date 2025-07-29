@@ -1,7 +1,30 @@
 package com.project.back_end.models;
 
-public class Admin {
+import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Admin {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @NotNull(message = "Username cannot be null")
+    private String name;
+
+    @NotNull(message = "Password cannot be null")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    private String password;
 // @Entity annotation:
 //    - Marks the class as a JPA entity, which means it represents a table in the database.
 //    - It is required for persistence frameworks like Hibernate to map the class to a database table.
@@ -33,5 +56,6 @@ public class Admin {
 
 // 5. Getters and Setters:
 //    - Standard getter and setter methods are provided for accessing and modifying the fields.
+
 
 }

@@ -1,7 +1,53 @@
 package com.project.back_end.models;
 
-public class Appointment {
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class Appointment {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @NotNull(message = "Doctor cannot be null")
+    private Doctor doctor;
+
+    @ManyToOne
+    @NotNull
+    private Patient patient;
+
+    @Future(message = "Appointment time must be in the future")
+    private LocalDateTime appointmentTime;
+
+    @NotNull
+    private int status;
+
+    @Transient
+    public LocalDateTime getEndTime(){
+        return this.appointmentTime.plusHours(1);
+    }
+
+    @Transient
+    public LocalDate getAppointmentTime(){
+        return this.appointmentTime.toLocalDate();
+    }
+
+    @Transient
+    public LocalTime getAppointmentTimeOnly(){
+        return this.appointmentTime.toLocalTime();
+    }
   // @Entity annotation:
 //    - Marks the class as a JPA entity, meaning it represents a table in the database.
 //    - Required for persistence frameworks (e.g., Hibernate) to map the class to a database table.
